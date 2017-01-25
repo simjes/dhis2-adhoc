@@ -6,7 +6,11 @@ The purpose of this tool is to assist in performing ad-hoc tasks which benefits 
 
 The ad-hoc tool is based on the command pattern, and lets you write your own command classes which perform the actual work.
 
-Command classes must be annotated with the @Executed annotation, mapped as a Spring bean if necessary and added to the commands method in RunMe.java.
-
 The RunMe.java class is the starting point, and this class can be run as a Java project using your IDE or the command line.
+
+See the <pre>org.hisp.dhis.adhoc.command</pre> package for sample command classes.
+
+Command classes must be annotated with the <pre>@Executed</pre> annotation, mapped as a Spring bean if necessary and added to the commands method in <pre>RunMe.java</pre>.
+
+
 
