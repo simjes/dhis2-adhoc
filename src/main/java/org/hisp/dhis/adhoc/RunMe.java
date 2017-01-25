@@ -33,7 +33,7 @@ public class RunMe
 {
     private static final Log log = LogFactory.getLog( RunMe.class );
     
-    private static final String DHIS2_HOME = "/home/larshelg/dev/config/dhis2"; // Change this
+    private static final String DHIS2_HOME = "/Users/markusbekken/Documents/Projects/HISP/conf/demo"; // Change this
     
     private static ApplicationContext context;
     
@@ -42,7 +42,7 @@ public class RunMe
      */
     public static List<String> commands()
     {
-        return Arrays.asList( "randomDataUsagePopulator" ); // Change this
+        return Arrays.asList( "randomEnrollmentPopulator" ); // Change this
     }
     
     public static void main( String[] args )

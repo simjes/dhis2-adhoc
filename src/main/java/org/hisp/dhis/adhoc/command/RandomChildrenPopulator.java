@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hisp.dhis.adhoc.annotation.Executed;
+import org.hisp.dhis.adhoc.utils.DataGenerationUtils;
 import org.hisp.dhis.dataelement.DataElement;
 import org.hisp.dhis.dataelement.DataElementService;
 import org.hisp.dhis.option.OptionService;
@@ -182,22 +183,22 @@ public class RandomChildrenPopulator
 
             dvs.add( new TrackedEntityDataValue( psi1, deApgar, String.valueOf( new Random().nextInt( 3 ) ) ) );
             dvs.add( new TrackedEntityDataValue( psi1, deWeight, String.valueOf( ( 2500 + new Random().nextInt( 1500 ) ) ) ) );
-            dvs.add( new TrackedEntityDataValue( psi1, deArv, getRandomOptionSetCode( osArv  ) ) );
-            dvs.add( new TrackedEntityDataValue( psi1, deBcg, getRandomBool() ) );
-            dvs.add( new TrackedEntityDataValue( psi1, deOpv, getRandomOptionSetCode( osOpv ) ) );
-            dvs.add( new TrackedEntityDataValue( psi1, deInfFeed, getRandomOptionSetCode( osInfFeed ) ) );
+            dvs.add( new TrackedEntityDataValue( psi1, deArv, DataGenerationUtils.getRandomOptionSetCode( osArv  ) ) );
+            dvs.add( new TrackedEntityDataValue( psi1, deBcg, DataGenerationUtils.getRandomBoolString() ) );
+            dvs.add( new TrackedEntityDataValue( psi1, deOpv, DataGenerationUtils.getRandomOptionSetCode( osOpv ) ) );
+            dvs.add( new TrackedEntityDataValue( psi1, deInfFeed, DataGenerationUtils.getRandomOptionSetCode( osInfFeed ) ) );
             
             dvs.add( new TrackedEntityDataValue( psi2, deInfWeight, String.valueOf( ( 2500 + new Random().nextInt( 1500 ) ) ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deInfFeed, getRandomOptionSetCode( osInfFeed ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deMeasles, getRandomBool() ) );
-            dvs.add( new TrackedEntityDataValue( psi2, dePenta, getRandomOptionSetCode( osPenta ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deYelFev, getRandomBool() ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deIpt, getRandomOptionSetCode( osIpt ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deDpt, getRandomOptionSetCode( osDpt ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deVitA, getRandomBool() ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deHivRes, getRandomOptionSetCode( osHivRes ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deHivTest, getRandomOptionSetCode( osHivTest ) ) );
-            dvs.add( new TrackedEntityDataValue( psi2, deChildArv, getRandomOptionSetCode( osChildArv ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deInfFeed, DataGenerationUtils.getRandomOptionSetCode( osInfFeed ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deMeasles, DataGenerationUtils.getRandomBoolString() ) );
+            dvs.add( new TrackedEntityDataValue( psi2, dePenta, DataGenerationUtils.getRandomOptionSetCode( osPenta ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deYelFev, DataGenerationUtils.getRandomBoolString() ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deIpt, DataGenerationUtils.getRandomOptionSetCode( osIpt ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deDpt, DataGenerationUtils.getRandomOptionSetCode( osDpt ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deVitA, DataGenerationUtils.getRandomBoolString() ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deHivRes, DataGenerationUtils.getRandomOptionSetCode( osHivRes ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deHivTest, DataGenerationUtils.getRandomOptionSetCode( osHivTest ) ) );
+            dvs.add( new TrackedEntityDataValue( psi2, deChildArv, DataGenerationUtils.getRandomOptionSetCode( osChildArv ) ) );
             
             for ( TrackedEntityDataValue dv : dvs )
             {
@@ -208,17 +209,5 @@ public class RandomChildrenPopulator
             
             log.info( "Created tracked entity instance " + c + ": " + tei.getUid() + ", " + values[0] + " " + values[1] + " " + values[2] + ", values: " + dvs.size() );
         }
-    }
-    
-    private String getRandomOptionSetCode( OptionSet optionSet )
-    {
-        int no = optionSet.getOptions().size();
-        int r = new Random().nextInt( no );
-        return optionSet.getOptions().get( r ).getCode();        
-    }
-    
-    private String getRandomBool()
-    {
-        return String.valueOf( new Random().nextBoolean() );
     }
 }
