@@ -153,7 +153,6 @@ public class RandomEnrollmentPopulator
                 programStageInstanceCount + " programstageInstances.");
         }
         
-        log.info( "Created " + numberOfRecords + " programInstances with a total of " + 
-                        totalProgramStageInstanceCount + " programStageInstances");
+        log.info( "Created " + numberOfRecords + " programInstances with a total of " + totalProgramStageInstanceCount + " programStageInstances");
     }
 }
