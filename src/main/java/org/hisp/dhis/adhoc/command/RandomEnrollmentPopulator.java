@@ -10,10 +10,7 @@ import org.hisp.dhis.adhoc.annotation.Executed;
 import org.hisp.dhis.adhoc.utils.DataGenerationUtils;
 import org.hisp.dhis.common.ValueType;
 import org.hisp.dhis.dataelement.DataElement;
-import org.hisp.dhis.dataelement.DataElementService;
-import org.hisp.dhis.option.OptionService;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
-import org.hisp.dhis.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
 import org.hisp.dhis.program.ProgramInstanceService;
@@ -22,13 +19,10 @@ import org.hisp.dhis.program.ProgramStage;
 import org.hisp.dhis.program.ProgramStageDataElement;
 import org.hisp.dhis.program.ProgramStageInstance;
 import org.hisp.dhis.program.ProgramStageInstanceService;
-import org.hisp.dhis.program.ProgramStageService;
 import org.hisp.dhis.trackedentity.TrackedEntity;
 import org.hisp.dhis.trackedentity.TrackedEntityAttribute;
-import org.hisp.dhis.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.trackedentity.TrackedEntityInstance;
 import org.hisp.dhis.trackedentity.TrackedEntityInstanceService;
-import org.hisp.dhis.trackedentity.TrackedEntityService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeReservedValueService;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValue;
 import org.hisp.dhis.trackedentityattributevalue.TrackedEntityAttributeValueService;
@@ -44,24 +38,15 @@ public class RandomEnrollmentPopulator
     
     @Autowired
     private TrackedEntityInstanceService teiService;
-    
-    @Autowired
-    private TrackedEntityService teService;
-    
+        
     @Autowired
     private ProgramService programService;
-    
-    @Autowired
-    private ProgramStageService programStageService;
-    
+        
     @Autowired
     private ProgramInstanceService programInstanceService;
     
     @Autowired
     private ProgramStageInstanceService psiService;
-
-    @Autowired
-    private TrackedEntityAttributeService attributeService;
 
     @Autowired
     private TrackedEntityAttributeValueService attributeValueService;
@@ -72,14 +57,6 @@ public class RandomEnrollmentPopulator
     @Autowired
     private TrackedEntityDataValueService dataValueService;
     
-    @Autowired
-    private DataElementService dataElementService;
-    
-    @Autowired
-    private OptionService optionService;
-    
-    @Autowired
-    private OrganisationUnitService organisationUnitService;
     
     @Executed
     @Transactional
@@ -175,6 +152,7 @@ public class RandomEnrollmentPopulator
                 " for program: " + p.getName() + " - " + p.getUid() + " with " + 
                 programStageInstanceCount + " programstageInstances.");
         }
+        
         log.info( "Created " + numberOfRecords + " programInstances with a total of " + 
                         totalProgramStageInstanceCount + " programStageInstances");
     }
