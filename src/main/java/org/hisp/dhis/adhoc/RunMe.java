@@ -31,6 +31,7 @@ import com.google.common.collect.ImmutableList;
  * </ol>
  */
 public class RunMe
+
 {    
     /**
      * Change location of DHIS 2 home to match your environment.
