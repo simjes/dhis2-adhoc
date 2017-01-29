@@ -21,7 +21,7 @@ public class DataGenerationUtils
     private static List<String> womenFirstNames = null;
     private static List<String> menFirstNames = null;
     private static List<String> lastNames = null;
-    
+
     private static void LoadNames() throws Exception
     {
         //TODO: Questionable thread safety
@@ -89,5 +89,27 @@ public class DataGenerationUtils
     public static String getRandomBoolString()
     {
         return String.valueOf( new Random().nextBoolean() );
+    }
+
+    public static String getRandomCoordinates(String orgUnitCoordinates, double radiusInMeter) {
+        String[] centerCoordinates = orgUnitCoordinates.substring(1, orgUnitCoordinates.length() -1).split(",");
+        double latitudeCenter = Double.parseDouble(centerCoordinates[0]);
+        double longitudeCenter = Double.parseDouble(centerCoordinates[1]);
+
+        double radiusInDegrees = radiusInMeter / 111300f;
+
+        // Get a random distance and a random angle.
+        double u = Math.random();
+        double v = Math.random();
+        double w = radiusInDegrees * Math.sqrt(u);
+        double t = 2 * Math.PI * v;
+
+        // Get the x and y delta values.
+        double x = w * Math.cos(t);
+        double y = w * Math.sin(t);
+
+        // Adjust the x-coordinate for the shrinking of the east-west distances
+        double xp = x / Math.cos(Math.toRadians(latitudeCenter));
+        return String.format("[%s,%s]", latitudeCenter + y, longitudeCenter + xp);
     }
 }
