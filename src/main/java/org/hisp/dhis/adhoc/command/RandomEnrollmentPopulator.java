@@ -66,7 +66,7 @@ public class RandomEnrollmentPopulator
     public void execute()
         throws Exception
     {
-        int numberOfRecords = 1; //Update number of records
+        int numberOfRecords = 300; //Update number of records
         Program p = programService.getProgram( "p55TSnIz83Z" ); //Update program uid
         
         List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>( p.getOrganisationUnits() );
@@ -80,7 +80,7 @@ public class RandomEnrollmentPopulator
         {
             int programStageInstanceCount = 0;
             
-            DateTime date = new DateTime( DateTime.now().getYear() - 1, 1, 1, 12, 5 ).plusDays( new Random().nextInt( 363 ) );
+            DateTime date = new DateTime( DateTime.now().getYear(), 1, 1, 12, 5 ).plusDays( new Random().nextInt( 60 ) );
             
             OrganisationUnit ou = ous.get( new Random().nextInt( ous.size() ) );
             TrackedEntityInstance tei = new TrackedEntityInstance();
@@ -111,7 +111,7 @@ public class RandomEnrollmentPopulator
                     attributeValueService.addTrackedEntityAttributeValue( new TrackedEntityAttributeValue( att, tei,
                             lastName ) );
                 }
-                else if ( ( an.contains( "birth" ) || an.contains( "born" ) ) && att.isDateType() ) //dob?
+                else if ( ( an.contains( "birth" ) || an.contains( "born" ) || an.contains("dob") ) && att.isDateType() )
                 {
                     attributeValueService.addTrackedEntityAttributeValue( new TrackedEntityAttributeValue( att, tei,
                             DataGenerationUtils.getRandomDateString( 1970, 1990 ) ) );
@@ -126,7 +126,6 @@ public class RandomEnrollmentPopulator
                 }
             }
 
-            //Only shows after instance restart?
             ProgramInstance pi = programInstanceService.enrollTrackedEntityInstance( tei, p, date.toDate(), date.toDate(), ou );
             for ( ProgramStage ps : p.getProgramStages() )
             {
@@ -134,7 +133,7 @@ public class RandomEnrollmentPopulator
                 
                 for ( int eventCount = 0; eventCount < eventsToAdd; eventCount++ ) 
                 {
-                    date = date.plusDays( DataGenerationUtils.randBetween( 1, 50 ) );
+                    date = date.plusDays( DataGenerationUtils.randBetween( 1, 5 ) );
 
                     ProgramStageInstance psi = new ProgramStageInstance( pi, ps );
                     psi.setDueDate( date.toDate() );
@@ -163,15 +162,6 @@ public class RandomEnrollmentPopulator
                             dataValueService.saveTrackedEntityDataValue(new TrackedEntityDataValue(psi, de,
                                     DataGenerationUtils.getRandomOptionSetCode(de.getOptionSet())));
                         }
-                        //too specific?
-                        /*else if (de.isOptionSetValue() && dn.contains("test") && dn.contains("results")) {
-                            String option = DataGenerationUtils.getRandomOptionSetCode(de.getOptionSet());
-                            isTestPositive = option.toLowerCase().contains("positive");
-                            dataValueService.saveTrackedEntityDataValue(new TrackedEntityDataValue(psi, de,
-                                    option));
-                        } else if (de.isOptionSetValue() && dn.contains("confirmed") && dn.contains("disease") && isTestPositive) {
-
-                        }*/
                     }
                 }
             }
