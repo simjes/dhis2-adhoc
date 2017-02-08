@@ -66,7 +66,7 @@ public class RandomEnrollmentPopulator
     public void execute()
         throws Exception
     {
-        int numberOfRecords = 300; //Update number of records
+        int numberOfRecords = 2000; //Update number of records
         Program p = programService.getProgram( "p55TSnIz83Z" ); //Update program uid
         
         List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>( p.getOrganisationUnits() );
@@ -80,7 +80,7 @@ public class RandomEnrollmentPopulator
         {
             int programStageInstanceCount = 0;
             
-            DateTime date = new DateTime( DateTime.now().getYear(), 1, 1, 12, 5 ).plusDays( new Random().nextInt( 60 ) );
+            DateTime date = new DateTime( DateTime.now().getYear(), 2, 1, 12, 5 ).plusDays( new Random().nextInt( 60 ) );
             
             OrganisationUnit ou = ous.get( new Random().nextInt( ous.size() ) );
             TrackedEntityInstance tei = new TrackedEntityInstance();
@@ -93,7 +93,7 @@ public class RandomEnrollmentPopulator
             for ( TrackedEntityAttribute att : p.getTrackedEntityAttributes() ) 
             {
                 String an = att.getName().toLowerCase();
-                
+
                 if ( att.isGenerated() )
                 {
                     attributeValueService.addTrackedEntityAttributeValue( new TrackedEntityAttributeValue( att, tei,
@@ -111,7 +111,7 @@ public class RandomEnrollmentPopulator
                     attributeValueService.addTrackedEntityAttributeValue( new TrackedEntityAttributeValue( att, tei,
                             lastName ) );
                 }
-                else if ( ( an.contains( "birth" ) || an.contains( "born" ) || an.contains("dob") ) && att.isDateType() )
+                else if ( ( an.contains( "birth" ) || an.contains( "born" ) || an.contains("dob")) )
                 {
                     attributeValueService.addTrackedEntityAttributeValue( new TrackedEntityAttributeValue( att, tei,
                             DataGenerationUtils.getRandomDateString( 1970, 1990 ) ) );
