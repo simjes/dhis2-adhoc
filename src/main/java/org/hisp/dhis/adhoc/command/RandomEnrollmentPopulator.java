@@ -10,6 +10,9 @@ import org.hisp.dhis.adhoc.annotation.Executed;
 import org.hisp.dhis.adhoc.utils.DataGenerationUtils;
 import org.hisp.dhis.common.ValueType;
 import org.hisp.dhis.dataelement.DataElement;
+import org.hisp.dhis.dataelement.DataElementCategoryOptionCombo;
+import org.hisp.dhis.dxf2.utils.InputUtils;
+import org.hisp.dhis.event.EventStatus;
 import org.hisp.dhis.organisationunit.OrganisationUnit;
 import org.hisp.dhis.program.Program;
 import org.hisp.dhis.program.ProgramInstance;
@@ -57,6 +60,9 @@ public class RandomEnrollmentPopulator
     @Autowired
     private TrackedEntityDataValueService dataValueService;
 
+    @Autowired
+    protected InputUtils inputUtils;
+
     private String firstName;
     private String lastName;
     
@@ -66,7 +72,7 @@ public class RandomEnrollmentPopulator
     public void execute()
         throws Exception
     {
-        int numberOfRecords = 2000; //Update number of records
+        int numberOfRecords = 1; //Update number of records
         Program p = programService.getProgram( "p55TSnIz83Z" ); //Update program uid
         
         List<OrganisationUnit> ous = new ArrayList<OrganisationUnit>( p.getOrganisationUnits() );
@@ -87,6 +93,10 @@ public class RandomEnrollmentPopulator
             
             tei.setTrackedEntity( te );
             tei.setOrganisationUnit( ou );
+
+
+            double lat = 0;
+            double lng = 0;
             
             teiService.addTrackedEntityInstance( tei );
             
@@ -121,16 +131,22 @@ public class RandomEnrollmentPopulator
                             DataGenerationUtils.getRandomOptionSetCode(att.getOptionSet())));
                 }
                 else if (an.contains("residence")) {
+                    double[] coords = DataGenerationUtils.getRandomCoordinates(ou.getCoordinates(), 10000);
+                    lat =  coords[0];
+                    lng = coords[1];
+                    //log.info("lat: " + lat + ", lng: " + lng);
+
                     attributeValueService.addTrackedEntityAttributeValue(new TrackedEntityAttributeValue(att, tei,
-                            DataGenerationUtils.getRandomCoordinates(ou.getCoordinates(), 10000)));
+                            String.format("[%s,%s]",lng,lat)));
                 }
             }
 
             ProgramInstance pi = programInstanceService.enrollTrackedEntityInstance( tei, p, date.toDate(), date.toDate(), ou );
             for ( ProgramStage ps : p.getProgramStages() )
             {
-                int eventsToAdd = ps.getRepeatable() ? DataGenerationUtils.randBetween( 0, 5 ) : DataGenerationUtils.randBetween( 0, 1 );
-                
+                //int eventsToAdd = ps.getRepeatable() ? DataGenerationUtils.randBetween( 1, 5 ) : 1;
+                int eventsToAdd = 1;
+
                 for ( int eventCount = 0; eventCount < eventsToAdd; eventCount++ ) 
                 {
                     date = date.plusDays( DataGenerationUtils.randBetween( 1, 5 ) );
@@ -139,7 +155,20 @@ public class RandomEnrollmentPopulator
                     psi.setDueDate( date.toDate() );
                     psi.setExecutionDate( date.toDate() );
                     psi.setOrganisationUnit( ou );
-                    
+                    psi.setLatitude(lat);
+                    psi.setLongitude(lng);
+                    psi.setCompletedBy("simon");
+                    psi.setCompletedDate(date.toDate());
+                    psi.setStoredBy("simon");
+                    psi.setStatus(EventStatus.COMPLETED);
+                    //DataElementCategoryOptionCombo attributeOptionCombo = inputUtils.getAttributeOptionCombo(
+                     //       p.getCategoryCombo().getUid(), event.getAttributeCategoryOptions(), false );
+
+                    //psi.setAttributeOptionCombo();
+
+                    log.info("lat: " + lat + ", lng: " + lng);
+
+
                     psiService.addProgramStageInstance( psi );
                     programStageInstanceCount++;
                     totalProgramStageInstanceCount++;
@@ -148,7 +177,7 @@ public class RandomEnrollmentPopulator
                     {
                         DataElement de = psde.getDataElement();
                         String dn = de.getName().toLowerCase();
-                        
+
                         if ( de.isNumericType() && dn.contains( "moglobin" ) )
                         {
                             dataValueService.saveTrackedEntityDataValue( new TrackedEntityDataValue( psi, de,

@@ -91,10 +91,10 @@ public class DataGenerationUtils
         return String.valueOf( new Random().nextBoolean() );
     }
 
-    public static String getRandomCoordinates(String orgUnitCoordinates, double radiusInMeter) {
+    public static double[] getRandomCoordinates(String orgUnitCoordinates, double radiusInMeter) {
         String[] centerCoordinates = orgUnitCoordinates.substring(1, orgUnitCoordinates.length() -1).split(",");
-        double latitudeCenter = Double.parseDouble(centerCoordinates[0]);
-        double longitudeCenter = Double.parseDouble(centerCoordinates[1]);
+        double latitudeCenter = Double.parseDouble(centerCoordinates[1]);
+        double longitudeCenter = Double.parseDouble(centerCoordinates[0]);
 
         double radiusInDegrees = radiusInMeter / 111300f;
 
@@ -110,6 +110,7 @@ public class DataGenerationUtils
 
         // Adjust the x-coordinate for the shrinking of the east-west distances
         double xp = x / Math.cos(Math.toRadians(latitudeCenter));
-        return String.format("[%s,%s]", latitudeCenter + y, longitudeCenter + xp);
+        return new double[] {latitudeCenter+y, longitudeCenter+xp};
+        //return String.format("[%s,%s]", latitudeCenter + y, longitudeCenter + xp);
     }
 }
